@@ -1,6 +1,6 @@
 import pandas as pd
 from pathlib import Path
-from dig4bio.paths import RAW_DATA_FOLDER
+from dig4bio.paths import RAW_DATA_FOLDER, TRANSFER_PLATE_PATH, TEST_SAMPLES_PATH
 
 
 def read_raman_file(file_name: str, level: str) -> pd.DataFrame:
@@ -31,3 +31,15 @@ def read_raman_file(file_name: str, level: str) -> pd.DataFrame:
             return pd.read_csv(file_path)
     
     raise FileNotFoundError(file_name)
+
+def get_transfer_plate_df() -> pd.DataFrame:
+    if TRANSFER_PLATE_PATH.exists():
+            return pd.read_csv(TRANSFER_PLATE_PATH)
+    
+    raise FileNotFoundError(TRANSFER_PLATE_PATH)
+
+def get_test_samples_df() -> pd.DataFrame:
+    if TEST_SAMPLES_PATH.exists():
+            return pd.read_csv(TEST_SAMPLES_PATH)
+    
+    raise FileNotFoundError(TEST_SAMPLES_PATH)
