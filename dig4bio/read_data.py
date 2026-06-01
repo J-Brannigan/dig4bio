@@ -30,4 +30,4 @@ def read_raman_file(file_name: str, level: str) -> pd.DataFrame:
         if file_path.exists():
             return pd.read_csv(file_path)
     
-    raise FileNotFoundError()
+    raise FileNotFoundError(file_name)
