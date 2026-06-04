@@ -1,12 +1,22 @@
 import pandas as pd
 from pathlib import Path
-from dig4bio.paths import RAW_DATA_FOLDER, TRANSFER_PLATE_PATH, TEST_SAMPLES_PATH
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+DATA_FOLDER = PROJECT_ROOT / "data"
+
+RAW_DATA_FOLDER = DATA_FOLDER / "raw"
+INTERIM_DATA_FOLDER = DATA_FOLDER / "INTERIM"
+
+TRANSFER_PLATE_PATH_INTERIM = INTERIM_DATA_FOLDER / "transfer_plate.csv"
+TEST_SAMPLES_PATH_INTERIM = INTERIM_DATA_FOLDER / "96_samples.csv"
+SAMPLE_SUBMISSION_PATH_INTERIM = INTERIM_DATA_FOLDER / "sample_submission.csv"
 
 def read_raman_file(file_name: str, level: str) -> pd.DataFrame:
 
     folder_map = {
-        'raw': RAW_DATA_FOLDER
+        'raw': RAW_DATA_FOLDER,
+        'interim': INTERIM_DATA_FOLDER
     }
 
     abbr_map = {
