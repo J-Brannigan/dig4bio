@@ -220,8 +220,10 @@ __marimo__/
 
 
 
-data/interim/
-data/processed/
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 results/
 experiments/**/runs/
 *.pkl
