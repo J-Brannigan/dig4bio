@@ -8,3 +8,6 @@ version = "0.1.0"
 description = "Utilities and modelling code for the Dig4Bio Kaggle project."
 requires-python = ">=3.12"
 dependencies = []
+
+[project.scripts]
+clean-transfer-plate = "dig4bio.cli:make_interim_transfer_plate_command"
