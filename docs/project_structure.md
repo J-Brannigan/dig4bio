@@ -10,9 +10,8 @@ project/
         processed/
 
     notebooks/
+    
     docs/
-
-    scripts/
 
     src/
         dig4bio/
@@ -44,9 +43,7 @@ project/
 
 `docs/` is for project-level notes, decisions, assumptions, and strategy.
 
-`scripts/` is for CLI-oriented entry points and runnable project commands, such as experiment runners or data cleaning scripts.
-
-`src/dig4bio/` is the reusable Python package used by notebooks, scripts, and experiments.
+`src/dig4bio/` is the reusable Python package used by notebooks, CLI commands, and experiments.
 
 `configs/experiments/` contains editable experiment recipes.
 
@@ -58,7 +55,7 @@ project/
 
 Reusable Python code should live under `src/dig4bio/`.
 
-Notebooks and scripts should import project code from the package:
+Notebooks, CLI commands, and experiment code should import project code from the package:
 
 ```python
 from dig4bio.utils import read_raman_file
@@ -69,6 +66,8 @@ Install the package in editable mode from the project root:
 ```bash
 python -m pip install -e .
 ```
+
+Future command-line entry points should live in `src/dig4bio/cli.py`. Keep CLI code thin; reusable workflow logic should live in regular package modules.
 
 ## Experiment Convention
 
@@ -149,8 +148,8 @@ Intermediate or cached data       -> data/interim/
 Final modelling-ready data        -> data/processed/
 
 Exploration                      -> notebooks/
-CLI scripts and runnable commands -> scripts/
 Reusable Python code              -> src/dig4bio/
+CLI entry points                  -> src/dig4bio/cli.py
 Project-level notes               -> docs/
 
 Editable experiment config         -> configs/experiments/exp_xxx.yaml
@@ -165,7 +164,7 @@ Global result comparisons          -> results/
 
 * Keep raw data untouched.
 * Keep exploratory notebooks separate from reusable package code.
-* Keep CLI scripts thin; reusable logic should live in `src/dig4bio/`.
+* Keep CLI entry points thin; reusable logic should live in regular package modules.
 * Keep project-level strategy separate from experiment-specific notes.
 * Keep editable configs separate from frozen run configs.
 * Save enough information for each run to understand and reproduce it later.
