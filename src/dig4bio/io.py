@@ -2,7 +2,7 @@ import pandas as pd
 from dig4bio.utils import get_level_path
 from pathlib import Path
 
-def read_raman_file(name: str, level: str) -> pd.DataFrame:
+def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFrame:
 
     abbr_map = {
         'anton532': 'anton_532',
@@ -25,7 +25,7 @@ def read_raman_file(name: str, level: str) -> pd.DataFrame:
 
     for file_path in candidates:
         if file_path.exists():
-            return pd.read_csv(file_path)
+            return pd.read_csv(file_path,index_col=False, header=header)
     
     raise FileNotFoundError(name)
 
@@ -34,9 +34,9 @@ def write_raman_file(df: pd.DataFrame, level: Path, output_filename: str) -> Non
     folder = get_level_path(level)
 
     if output_filename.lower().strip().endswith('.csv'):
-        df.to_csv(folder / output_filename)
+        df.to_csv(folder / output_filename, index=False)
     elif output_filename.lower().strip().endswith('.parquet'):
-        df.to_parquet(folder / output_filename)
+        df.to_parquet(folder / output_filename, index=False)
     else:
         raise ValueError(f'Unsupported or missing filetype: {output_filename}')
 

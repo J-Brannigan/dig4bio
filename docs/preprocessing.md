@@ -29,3 +29,9 @@
         - New instrument spectrum -> Master instrument spectrum
     - Apply that transformation to future spectra from the new instrument.
     - Feed the transformed spectra into the concentration model.
+
+
+# Wavenumber Grid
+As the wavenumbers are not the same between datasets, datasets cannot be easily related or combined.
+The question is - how do we relate them onto the same grid? 
+We could find the minimum range that is contained within them all (about 300-1940), then pick the coarsest 
