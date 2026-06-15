@@ -22,16 +22,18 @@ def remove_brackets_from_spectral_vals(df: pd.DataFrame, spectral_columns: list[
     df[spectral_columns] = df[spectral_columns].replace(r'[\[\]]','',regex=True)
     return df
 
-def label_transfer_plate_cols(df: pd.DataFrame) -> pd.DataFrame:
+def label_df_columns(df: pd.DataFrame, has_label_cols: bool = True) -> pd.DataFrame:
     start_wavenumber = 65
     end_wavenumber = 3350
     wavenumber_count = 2048
 
     sample_col = ['sample']
     spectral_cols = np.linspace(start_wavenumber,end_wavenumber,wavenumber_count).round(2).tolist()
-    label_cols = df.columns[-4:].tolist()
-
-    df.columns = sample_col + spectral_cols + label_cols
+    if has_label_cols:
+        label_cols = df.columns[-4:].tolist()
+        df.columns = sample_col + spectral_cols + label_cols
+    else:
+        df.columns = sample_col + spectral_cols
 
     return df
 
