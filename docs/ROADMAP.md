@@ -2,15 +2,15 @@
 
 ## Contents
 
-- [1. Clean Datasets](#1-clean-datasets)
-  - [1.1 Clean 8-device datasets](#11-clean-8-device-datasets-)
-  - [1.2 Clean transfer plate dataset 🚧](#12-clean-transfer-plate-dataset-)
-  - [1.3 Clean 96-sample dataset 🚧](#13-clean-96-sample-dataset-)
+- [1. Clean Datasets 🚧](#1-clean-datasets)
+  - [1.1 Clean 8-device datasets 🚧](#11-clean-8-device-datasets-)
+  - [1.2 Clean transfer plate dataset ✅](#12-clean-transfer-plate-dataset-)
+  - [1.3 Clean 96-sample dataset ✅](#13-clean-96-sample-dataset-)
 - [2. Standardise Wavenumber Grids](#2-standardise-wavenumber-grids)
 
 ## Current Priority 🚧
 
-[1.2 Clean transfer plate dataset](#12-clean-transfer-plate-dataset-) and [1.3 Clean 96-sample dataset](#13-clean-96-sample-dataset-). We need to produce a summary of the statistics of each dataset that we can go back to and reference in future.
+[1.1 Clean 8-device datasets](#11-clean-8-device-datasets-).
 
 ## Project Gates
 - Clean datasets 🚧
@@ -23,10 +23,10 @@
 
 # 1. Clean Datasets
 This is just basic cleanup - ensuring no nulls, standarising columns shapes, removal of erroenous characters
-## 1.1 Clean 8-device datasets 
+## 1.1 Clean 8-device datasets 🚧
 
 ### Status:
-Not Started
+In Progress
 
 ### **Description:**
 Standardise the eight source datasets so they share a consistent structure and can be processed together.
@@ -41,12 +41,12 @@ Standardise the eight source datasets so they share a consistent structure and c
 - One cleaned csv file per source device.
 - A reusable transformation function.
 - A reusable CLI command.
-- A short summary of each device's shape, target columns, sample count and wavenumber range.
+- A short summary of each device's shape, target columns, sample count and wavenumber range. ✅
 
-## 1.2 Clean transfer plate dataset 🚧
+## 1.2 Clean transfer plate dataset ✅
 
 ### Status:
-In Progress
+Complete
 
 ### **Description:**
 Clean transfer plate dataset ready for shared-grid transformation.
@@ -61,12 +61,12 @@ Notes:
 - One cleaned csv file for the transfer plate. ✅
 - A reusable transformation function. ✅
 - A reusable CLI command. ✅
-- A short summary of the data shape, target columns, sample count and wavenumber range. 🚧
+- A short summary of the data shape, target columns, sample count and wavenumber range. ✅
 
-## 1.3 Clean 96-sample dataset 🚧
+## 1.3 Clean 96-sample dataset ✅
 
 ### Status:
-In Progress
+Complete
 
 ### **Description:**
 Clean 96-sample dataset ready for shared-grid transformation.
@@ -81,7 +81,7 @@ Notes:
 - One cleaned csv file for the 96-sample plate. ✅
 - A reusable transformation function. ✅
 - A reusable CLI command. ✅
-- A short summary of the data shape, target columns, sample count and wavenumber range. 🚧
+- A short summary of the data shape, target columns, sample count and wavenumber range. ✅
 
 # 2. Standardise Wavenumber Grids
 ### Status:

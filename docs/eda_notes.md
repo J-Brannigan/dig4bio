@@ -8,11 +8,43 @@ There are 2 measurements per sample
 # 3 Notes
 As there are repeated measurements of the same sample in the transfer plate dataset, the same sample should not be in both train and test datasets.
 
+# Counts
+
+| Dataset | Row Count | Column Count |
+| ------- | ------------: | ------------: |
+| anton532 | 270 | 1656 |
+| anton785 | 270 | 1106 |
+| kaiser | 134 | 6598 |
+| metrohm | 399 | 1922 |
+| mettler | 275 | 2906 |
+| tec | 395 | 3131 |
+| timegate | 133 | 516 |
+| tornado | 385 | 3006 |
+| | | |
+| Transfer Plate | 192 | 2052 |
+| | | |
+| 96 Samples | 192 | 2049 |
+
 # Folds
-There seems to be a fold_idx value in each of the 8 device data. This seems to be some sort of predefined cross validation folding? We should probably try our own folding methods first, but fall back to this to see if there is a performance improvement gained by using it.
+There seems to be a fold_idx value in each of the 8 device data. This is predefined folds as in the [source paper](https://doi.org/10.1016/j.saa.2025.125861), where each fold contains the same samples across all devices (e.g sample A is in fold 2 for each of the 8 devices).
+
+| Dataset | Fold 0 Count | Fold 1 Count | Fold 2 Count | Fold 3 Count | Fold 4 Count |
+| ------- | -----: | -----: | -----: | -----: | -----: |
+| anton532 | 50 | 55 | 55 | 55 | 55 |
+| anton785 | 50 | 55 | 55 | 55 | 55 |
+| kaiser | 26 | 27 | 27 | 27 | 27 |
+| metrohm | 80 | 80 | 80 | 80 | 79 |
+| mettler | 55 | 55 | 55 | 55 | 55 |
+| tec | 75 | 80 | 80 | 80 | 80 |
+| timegate | 26 | 27 | 26 | 27 | 27 |
+| tornado | 75 | 75 | 80 | 75 | 80 |
 
 # Nulls
-There are no nulls in any of the 8 device, transfer plate, 
+| Dataset | Number Of Null Values |
+| ------- | ------------: | 
+| 8 Devices | 0 |
+| Transfer Plate | 0 |
+| 96 Samples | 0 |
 
 # Intensities
 
@@ -27,7 +59,9 @@ There are no nulls in any of the 8 device, transfer plate,
 | timegate | 0.000043	 | 0.0051 | 0.00057 |
 | tornado | 251.38 | 91506.35 | 10174.18 |
 | | | | |
-| transfer_plate | 987 | 65535 | 4333.78 |
+| Transfer Plate | 987 | 65535 | 4333.78 |
+| | | | |
+| 96 Samples | 3012 | 6608 | 4917.14 |
 
 Intensities vary a lot between devices, and so these will need to be normalised in some way if we are to relate measurements.
 
@@ -45,5 +79,7 @@ Intensities vary a lot between devices, and so these will need to be normalised 
 | tornado | 300 | 3300 | 1    | True  |
 |  |  |  |  |  |
 | transfer_plate | 65 | 3350.00 | 1 | True |
+| | | | |
+| 96_samples |  65 | 3350.00 | 1 | True |
 
 As the datasets do not use the same grid of wavenumbers, we will need to consider how to relate them together.
