@@ -1,6 +1,8 @@
 # Dig4Bio
 
-Kaggle project workspace for the Dig4Bio Raman transfer learning challenge.
+Kaggle project workspace for the Dig4Bio Raman transfer learning challenge. The project focuses on predicting the concentrations of glucose, acetate, and magnesium sulfate from Raman spectra collected across different measurement setups.
+
+https://www.kaggle.com/competitions/dig-4-bio-raman-transfer-learning-challenge
 
 ## Problem Statement
 
@@ -62,4 +64,13 @@ Then notebooks, CLI commands, and experiment code can import reusable functional
 from dig4bio.utils import read_raman_file
 ```
 
-Future command-line entry points should live in `src/dig4bio/cli.py`.
+## Command Line Usage
+
+After installing the package in editable mode, these commands are available:
+
+| Command | Description |
+| ------- | ----------- |
+| `clean-transfer-plate` | Create the interim transfer plate dataset. |
+| `clean-test-samples` | Create the interim 96-sample test dataset. |
+| `clean-8-devices` | Create interim datasets for the eight source devices. |
+| `clean-all-data` | Create all interim datasets. |

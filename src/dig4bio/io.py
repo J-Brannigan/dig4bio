@@ -1,17 +1,11 @@
 import pandas as pd
 from dig4bio.utils import get_level_path
 from pathlib import Path
+from dig4bio.constants import DATASET_NAME_ALIASES
 
 def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFrame:
 
-    abbr_map = {
-        'anton532': 'anton_532',
-        'anton785': 'anton_785',
-        'mettler':  'mettler_toledo',
-        'tec' :     'tec5',
-        'transfer': 'transfer_plate',
-        '96':       '96_samples'
-    }
+    DATASET_NAME_ALIASES
 
     folder = get_level_path(level)
 
@@ -20,8 +14,8 @@ def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFra
         folder / f"{name}.csv",
     ]
 
-    if name in abbr_map:
-        candidates.append(folder / f"{abbr_map[name]}.csv")
+    if name in DATASET_NAME_ALIASES:
+        candidates.append(folder / f"{DATASET_NAME_ALIASES[name]}.csv")
 
     for file_path in candidates:
         if file_path.exists():

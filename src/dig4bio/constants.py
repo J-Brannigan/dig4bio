@@ -1,0 +1,19 @@
+SOURCE_DEVICE_NAMES: tuple[str, ...] = (
+    'anton532',
+    'anton785',
+    'kaiser',
+    'metrohm',
+    'mettler',
+    'tec',
+    'timegate',
+    'tornado',
+)
+
+DATASET_NAME_ALIASES: dict[str, str] = {
+    'anton532': 'anton_532',
+    'anton785': 'anton_785',
+    'mettler': 'mettler_toledo',
+    'tec': 'tec5',
+    'transfer': 'transfer_plate',
+    '96': '96_samples',
+}

@@ -2,18 +2,16 @@
 
 ## Contents
 
-- [1. Clean Datasets 🚧](#1-clean-datasets)
-  - [1.1 Clean 8-device datasets 🚧](#11-clean-8-device-datasets-)
+- [1. Clean Datasets ✅](#1-clean-datasets)
+  - [1.1 Clean 8-device datasets ✅](#11-clean-8-device-datasets-)
   - [1.2 Clean transfer plate dataset ✅](#12-clean-transfer-plate-dataset-)
   - [1.3 Clean 96-sample dataset ✅](#13-clean-96-sample-dataset-)
 - [2. Standardise Wavenumber Grids](#2-standardise-wavenumber-grids)
 
 ## Current Priority 🚧
 
-[1.1 Clean 8-device datasets](#11-clean-8-device-datasets-).
-
 ## Project Gates
-- Clean datasets 🚧
+- Clean datasets ✅
 - Choose shared wavenumber grid strategy
 - Transform all spectra to shared grid
 - Combine 8-device training data
@@ -23,7 +21,7 @@
 
 # 1. Clean Datasets
 This is just basic cleanup - ensuring no nulls, standarising columns shapes, removal of erroenous characters
-## 1.1 Clean 8-device datasets 🚧
+## 1.1 Clean 8-device datasets ✅
 
 ### Status:
 In Progress
@@ -38,9 +36,9 @@ Standardise the eight source datasets so they share a consistent structure and c
 - Record each device's wavenumber grid.
 
 ### **Output:**
-- One cleaned csv file per source device.
-- A reusable transformation function.
-- A reusable CLI command.
+- One cleaned csv file per source device. ✅
+- A reusable transformation function. ✅
+- A reusable CLI command. ✅
 - A short summary of each device's shape, target columns, sample count and wavenumber range. ✅
 
 ## 1.2 Clean transfer plate dataset ✅
