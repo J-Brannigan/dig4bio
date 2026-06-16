@@ -3,14 +3,14 @@
 ## Contents
 
 - [1. Clean Datasets](#1-clean-datasets)
-  - [1.1 Clean 8-device datasets 🚧](#11-clean-8-device-datasets-)
-  - [1.2 Clean transfer plate dataset ✅](#12-clean-transfer-plate-dataset-)
-  - [1.3 Clean 96-sample dataset ✅](#13-clean-96-sample-dataset-)
+  - [1.1 Clean 8-device datasets](#11-clean-8-device-datasets-)
+  - [1.2 Clean transfer plate dataset 🚧](#12-clean-transfer-plate-dataset-)
+  - [1.3 Clean 96-sample dataset 🚧](#13-clean-96-sample-dataset-)
 - [2. Standardise Wavenumber Grids](#2-standardise-wavenumber-grids)
 
 ## Current Priority 🚧
 
-[1.1 Clean 8-device datasets](#11-clean-8-device-datasets-). The immediate goal is to clean the eight source datasets so they can later be standardised onto a shared wavenumber grid and combined for cross-validation.
+[1.2 Clean transfer plate dataset](#12-clean-transfer-plate-dataset-) and [1.3 Clean 96-sample dataset](#13-clean-96-sample-dataset-). We need to produce a summary of the statistics of each dataset that we can go back to and reference in future.
 
 ## Project Gates
 - Clean datasets 🚧
@@ -23,35 +23,33 @@
 
 # 1. Clean Datasets
 This is just basic cleanup - ensuring no nulls, standarising columns shapes, removal of erroenous characters
-## 1.1 Clean 8-device datasets 🚧
+## 1.1 Clean 8-device datasets 
+
+### Status:
+Not Started
+
+### **Description:**
 Standardise the eight source datasets so they share a consistent structure and can be processed together.
 
-Tasks:
+### **Tasks:**
 - Check for missing or invalid values.
 - Clean column names.
 - Separate spectral measurements from concentration labels.
 - Record each device's wavenumber grid.
-- Preserve sample IDs, device IDs and fold indices where available.
 
-Output:
-One cleaned csv file per source device.
-A short summary of each device's shape, target columns, sample count and wavenumber range.
+### **Output:**
+- One cleaned csv file per source device.
+- A reusable transformation function.
+- A reusable CLI command.
+- A short summary of each device's shape, target columns, sample count and wavenumber range.
 
-## 1.2 Clean transfer plate dataset ✅
-Cleaned and ready for shared-grid transformation.
+## 1.2 Clean transfer plate dataset 🚧
 
-Notes:
-- Removed square brackets from spectral columns.
-- Labelled spectral columns with wavenumbers.
-- Stripped whitespace from sample names.
-- Forward-filled sample names due to repeated measurements.
+### Status:
+In Progress
 
-Output:
-One cleaned csv file for the transfer plate.
-A short summary of the data shape, target columns, sample count and wavenumber range.
-
-## 1.3 Clean 96-sample dataset ✅
-Cleaned and ready for shared-grid transformation.
+### **Description:**
+Clean transfer plate dataset ready for shared-grid transformation.
 
 Notes:
 - Removed square brackets from spectral columns.
@@ -59,9 +57,31 @@ Notes:
 - Stripped whitespace from sample names.
 - Forward-filled sample names due to repeated measurements.
 
-Output:
-One cleaned csv file for the 96-sample plate.
-A short summary of the data shape, target columns, sample count and wavenumber range.
+### **Output:**
+- One cleaned csv file for the transfer plate. ✅
+- A reusable transformation function. ✅
+- A reusable CLI command. ✅
+- A short summary of the data shape, target columns, sample count and wavenumber range. 🚧
+
+## 1.3 Clean 96-sample dataset 🚧
+
+### Status:
+In Progress
+
+### **Description:**
+Clean 96-sample dataset ready for shared-grid transformation.
+
+Notes:
+- Removed square brackets from spectral columns.
+- Labelled spectral columns with wavenumbers.
+- Stripped whitespace from sample names.
+- Forward-filled sample names due to repeated measurements.
+
+### **Output:**
+- One cleaned csv file for the 96-sample plate. ✅
+- A reusable transformation function. ✅
+- A reusable CLI command. ✅
+- A short summary of the data shape, target columns, sample count and wavenumber range. 🚧
 
 # 2. Standardise Wavenumber Grids
 ### Status:
