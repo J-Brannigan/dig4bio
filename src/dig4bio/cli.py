@@ -7,6 +7,7 @@ from dig4bio.pipelines import (
     make_interim_8_devices,
     make_interim_test_samples,
     make_interim_transfer_plate,
+    make_all_eda_figures,
 )
 
 def make_interim_transfer_plate_command() -> None:
@@ -62,3 +63,13 @@ def make_all_interim_command() -> None:
     parser.parse_args()
 
     make_all_interim_datasets()
+
+def make_all_eda_figures_command() -> None:
+
+    parser = argparse.ArgumentParser(
+        description="Create all eda figures from the raw/interim data."
+    )
+    
+    parser.parse_args()
+
+    make_all_eda_figures()

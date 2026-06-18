@@ -6,7 +6,7 @@ from dig4bio.data_cleaning import (
     forward_fill_column, 
     reassign_transfer_sample_rows
     )
-from dig4bio.constants import SOURCE_DEVICE_NAMES
+from dig4bio.constants import SOURCE_DEVICE_NAMES, ALL_DEVICE_NAMES
 
 def make_interim_transfer_plate_data():
 
@@ -40,8 +40,12 @@ def make_interim_test_samples_data():
 
 def make_interim_8_devices_data():
 
-    SOURCE_DEVICE_NAMES
-
-    raw_by_model =  {model: read_raman_file(name=model,level='raw') for model in SOURCE_DEVICE_NAMES}
+    raw_by_model =  {dataset: read_raman_file(name=dataset,level='raw') for dataset in SOURCE_DEVICE_NAMES}
 
     return raw_by_model
+
+def load_interim_datasets():
+
+    interim_dfs = {dataset: read_raman_file(name=dataset, level='interim') for dataset in ALL_DEVICE_NAMES}
+
+    return interim_dfs

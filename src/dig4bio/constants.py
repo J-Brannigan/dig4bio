@@ -9,6 +9,8 @@ SOURCE_DEVICE_NAMES: tuple[str, ...] = (
     'tornado',
 )
 
+ALL_DEVICE_NAMES: tuple[str, ...] = SOURCE_DEVICE_NAMES + ('transfer_plate','96_samples')
+
 DATASET_NAME_ALIASES: dict[str, str] = {
     'anton532': 'anton_532',
     'anton785': 'anton_785',
