@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from matplotlib.lines import Line2D
 
+from dig4bio.utils import get_interim_spectral_cols
+
 def generate_samples_plot(dfs: dict[str, pd.DataFrame]) ->plt.Figure:
     """
     Plot a sample of rows from each of the datasets/devices on one vertically stacked plot with the labelled fingerprint
@@ -31,14 +33,9 @@ def generate_samples_plot(dfs: dict[str, pd.DataFrame]) ->plt.Figure:
         df_to_show = dfs[device]
 
         # Datasets have different columns so spectral columns should be selected differently
-        if device == 'transfer_plate':
-            spectral_cols = df_to_show.columns[1:-4]
-        elif device == '96_samples':
-            spectral_cols = df_to_show.columns[1:]
-        else:
-            spectral_cols = df_to_show.columns[:-5]
+        spectral_cols = get_interim_spectral_cols(device, df_to_show)
 
-        wavenumbers = spectral_cols.astype(float)
+        wavenumbers = np.array(spectral_cols, dtype=float)
         df_sample = df_to_show.sample(10,random_state=90)
         spectra = df_sample[spectral_cols].to_numpy()
 
