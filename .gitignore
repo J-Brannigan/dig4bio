@@ -224,7 +224,11 @@ data/interim/*
 !data/interim/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
-results/
+results/*
+!results/figures/
+results/figures/*
+!results/figures/eda/
+!results/figures/eda/**
 experiments/**/runs/
 *.pkl
 *.joblib
