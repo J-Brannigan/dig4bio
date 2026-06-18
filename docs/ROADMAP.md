@@ -6,13 +6,16 @@
   - [1.1 Clean 8-device datasets ✅](#11-clean-8-device-datasets-)
   - [1.2 Clean transfer plate dataset ✅](#12-clean-transfer-plate-dataset-)
   - [1.3 Clean 96-sample dataset ✅](#13-clean-96-sample-dataset-)
-- [2. Standardise Wavenumber Grids](#2-standardise-wavenumber-grids)
+- [2. Standardise Wavenumber Grids 🚧](#2-standardise-wavenumber-grids)
+- [3. Perform Baseline Experiments](#3-perform-baseline-experiments)
 
 ## Current Priority 🚧
 
+[2. Standardise Wavenumber Grids](#2-standardise-wavenumber-grids). The datasets we have been given to not conform to the same grid of wavenumbers. Models would require this to be the case, and so we have to investigate, design, and implement a shared wavenumber grid for all datasets.
+
 ## Project Gates
 - Clean datasets ✅
-- Choose shared wavenumber grid strategy
+- Choose shared wavenumber grid strategy 🚧
 - Transform all spectra to shared grid
 - Combine 8-device training data
 - Implement CV strategy
@@ -24,7 +27,7 @@ This is just basic cleanup - ensuring no nulls, standarising columns shapes, rem
 ## 1.1 Clean 8-device datasets ✅
 
 ### Status:
-In Progress
+Completed
 
 ### **Description:**
 Standardise the eight source datasets so they share a consistent structure and can be processed together.
@@ -81,9 +84,9 @@ Notes:
 - A reusable CLI command. ✅
 - A short summary of the data shape, target columns, sample count and wavenumber range. ✅
 
-# 2. Standardise Wavenumber Grids
+# 2. Standardise Wavenumber Grids 🚧
 ### Status:
-Not started
+In Progress
 
 ### **Description:**
 Raman spectra from different devices may use different wavenumber grids. To train models across devices and predict consistently, all spectra need to be represented on a common grid.
@@ -106,5 +109,5 @@ Options:
 
 Status: Blocked by shared-grid strategy
 
-Goal:
-Combine the cleaned 8-device datasets into one training dataframe.
+Rough Goal:
+Produce a baseline performance goal for more advanced models to beat
