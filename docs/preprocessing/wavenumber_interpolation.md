@@ -61,7 +61,7 @@ I_{s,j}
 Here:
 - $I_{s,j}$ is the measured intensity at $x_j$
 - $I_{s,j+1}$ is the measured intensity at $x_{j+1}$
-- $\hat{I}_s(x)$ is the estimated intensity at the new wavenumber $x$
+- $`\hat{I}_s(x)`$ is the estimated intensity at the new wavenumber $x$
 
 The fraction
 ```math
