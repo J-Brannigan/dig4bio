@@ -74,3 +74,4 @@ After installing the package in editable mode, these commands are available:
 | `clean-test-samples` | Create the interim 96-sample test dataset. |
 | `clean-8-devices` | Create interim datasets for the eight source devices. |
 | `clean-all-data` | Create all interim datasets. |
+| `make-eda-figures` | Create all data analysis figures/plots |
