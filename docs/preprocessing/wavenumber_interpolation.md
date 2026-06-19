@@ -44,11 +44,28 @@ The first is for linear interpolation only, and can also only handle one spectru
 
 ## Mathematical Definition
 ### Linear Interpolation
-For each spectrum $s$, `make_interp_spline(..., k=1)` joins neighbouring measured points with straight lines. For a new wavenumber $x$ between two original wavenumbers $x_j$ and $x_{j+1}$, $$ \hat{I}_s(x) = I_{s,j} + \frac{x-x_j}{x_{j+1}-x_j} \left(I_{s,j+1}-I_{s,j}\right). $$ 
+
+For each spectrum $s$, `make_interp_spline(..., k=1)` joins neighbouring measured points with straight lines.
+
+For a new wavenumber $x$ between two original wavenumbers $x_j$ and $x_{j+1}$:
+
+```math
+\hat{I}_s(x)
+=
+I_{s,j}
++
+\frac{x-x_j}{x_{j+1}-x_j}
+\left(I_{s,j+1}-I_{s,j}\right)
+```
 
 Here:
 - $I_{s,j}$ is the measured intensity at $x_j$
 - $I_{s,j+1}$ is the measured intensity at $x_{j+1}$
 - $\hat{I}_s(x)$ is the estimated intensity at the new wavenumber $x$
 
-The fraction $$ \frac{x-x_j}{x_{j+1}-x_j} $$ describes how far $x$ lies between the two original wavenumbers.
+The fraction
+```math
+\frac{x-x_j}{x_{j+1}-x_j}
+```
+
+describes how far $x$ lies between the two original wavenumbers.
