@@ -32,6 +32,9 @@
 
 
 # Wavenumber Grid
-As the wavenumbers are not the same between datasets, datasets cannot be easily related or combined.
-The question is - how do we relate them onto the same grid? 
-We could find the minimum range that is contained within them all (about 300-1940), then pick the coarsest 
+
+The datasets use different wavenumber ranges and sampling intervals, so their spectra cannot be combined directly as model features. Before training across devices, every spectrum needs to be represented on the same wavenumber grid.
+
+The current working approach is to linearly interpolate spectra onto a shared grid over the fingerprint region, approximately **300 to 1800 cm⁻¹**. This avoids extrapolating beyond any device's observed range, but it also discards higher-wavenumber information available in some datasets.
+
+The detailed comparison of dataset ranges, grid spacing, and interpolation rationale is documented in [preprocessing/wavenumber_interpolation.md](preprocessing/wavenumber_interpolation.md).

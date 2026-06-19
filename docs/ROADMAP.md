@@ -101,8 +101,8 @@ Options:
 - Use one global grid based only on x-axis positions, not labels or intensities.
 
 ### **Output:**
-- Documented chosen grid strategy
-- A reusable transformation function.
+- Documented chosen grid strategy ✅
+- A reusable transformation function. ✅
 - All cleaned datasets transformed to the same spectral columns.
 
 # 3. Perform Baseline Experiments
