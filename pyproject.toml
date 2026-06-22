@@ -16,8 +16,8 @@ dependencies = [
 ]
 
 [project.scripts]
-clean-transfer-plate = "dig4bio.cli:make_interim_transfer_plate_command"
-clean-test-samples = "dig4bio.cli:make_interim_test_samples_command"
-clean-8-devices = "dig4bio.cli:make_interim_8_devices_command"
-clean-all-data = "dig4bio.cli:make_all_interim_command"
-make-eda-figures = "dig4bio.cli:make_all_eda_figures_command"
+dig4bio-clean-transfer = "dig4bio.cli:make_interim_transfer_plate_command"
+dig4bio-clean-test = "dig4bio.cli:make_interim_test_samples_command"
+dig4bio-clean-sources = "dig4bio.cli:make_interim_source_devices_command"
+dig4bio-clean-all = "dig4bio.cli:make_all_interim_command"
+dig4bio-make-eda = "dig4bio.cli:make_all_eda_figures_command"

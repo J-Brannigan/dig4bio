@@ -70,8 +70,8 @@ After installing the package in editable mode, these commands are available:
 
 | Command | Description |
 | ------- | ----------- |
-| `clean-transfer-plate` | Create the interim transfer plate dataset. |
-| `clean-test-samples` | Create the interim 96-sample test dataset. |
-| `clean-8-devices` | Create interim datasets for the eight source devices. |
-| `clean-all-data` | Create all interim datasets. |
-| `make-eda-figures` | Create all data analysis figures/plots |
+| `dig4bio-clean-transfer` | Create the interim transfer plate dataset. |
+| `dig4bio-clean-test` | Create the interim 96-sample test dataset. |
+| `dig4bio-clean-sources` | Create interim datasets for the eight source devices. |
+| `dig4bio-clean-all` | Create all interim datasets. |
+| `dig4bio-make-eda` | Create all data analysis figures/plots. |

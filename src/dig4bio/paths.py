@@ -11,3 +11,14 @@ INTERIM_DATA_FOLDER = DATA_FOLDER / "interim"
 PROCESSED_DATA_FOLDER = DATA_FOLDER / "processed"
 
 FIGURES_EDA_FOLDER = FIGURES_FOLDER / "eda"
+
+
+def get_level_path (level: str) -> Path:
+
+    folder_map = {
+        'raw': RAW_DATA_FOLDER,
+        'interim': INTERIM_DATA_FOLDER,
+        'processed': PROCESSED_DATA_FOLDER
+    }
+
+    return folder_map[level]

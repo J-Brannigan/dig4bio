@@ -1,8 +1,8 @@
 import pandas as pd
 
-from dig4bio.utils import get_level_path
+from dig4bio.paths import get_level_path
 from dig4bio.constants import DATASET_NAME_ALIASES
-
+from collections.abc import Iterable
 
 def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFrame:
     """
@@ -63,3 +63,10 @@ def write_raman_file(df: pd.DataFrame, level: str, output_filename: str) -> None
         df.to_parquet(folder / output_filename, index=False)
     else:
         raise ValueError(f'Unsupported or missing filetype: {output_filename}')
+
+def read_raman_files(names: Iterable[str],level: str) -> dict[str, pd.DataFrame]:
+    """Read several Raman datasets from the same data level."""
+    return {
+        name: read_raman_file(name=name, level=level)
+        for name in names
+    }

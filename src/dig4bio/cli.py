@@ -2,9 +2,9 @@
 
 import argparse
 
-from dig4bio.pipelines import (
+from dig4bio.workflows import (
     make_all_interim_datasets,
-    make_interim_8_devices,
+    make_interim_source_devices,
     make_interim_test_samples,
     make_interim_transfer_plate,
     make_all_eda_figures,
@@ -51,7 +51,7 @@ def make_interim_test_samples_command() -> None:
     make_interim_test_samples(output_filename=args.output_filename)
 
 
-def make_interim_8_devices_command() -> None:
+def make_interim_source_devices_command() -> None:
     """CLI wrapper for creating all interim source-device datasets."""
 
     parser = argparse.ArgumentParser(
@@ -61,7 +61,7 @@ def make_interim_8_devices_command() -> None:
     parser.parse_args()
 
     # No command arguments are needed yet; parse_args still gives --help support.
-    make_interim_8_devices()
+    make_interim_source_devices()
 
 
 def make_all_interim_command() -> None:

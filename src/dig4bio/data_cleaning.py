@@ -1,7 +1,67 @@
 import pandas as pd
 import numpy as np
 
-def reassign_transfer_sample_rows(df: pd.DataFrame) -> pd.DataFrame:
+def clean_transfer_plate_data(
+    raw_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Clean the raw labelled transfer-plate dataframe.
+
+    Parameters
+    ----------
+    raw_df:
+        Raw transfer-plate data as loaded from the competition file.
+
+    Returns
+    -------
+    pd.DataFrame
+        Cleaned transfer-plate data with sample identifiers, wavenumber
+        columns and concentration labels correctly assigned.
+    """
+    spectral_columns = raw_df.columns[1:-4].tolist()
+
+    cleaned_df = (
+        raw_df.copy()
+        .pipe(
+            _remove_brackets_from_spectral_vals,
+            spectral_columns=spectral_columns,
+        )
+        .pipe(_label_df_columns)
+        .pipe(_strip_column_whitespace, column_name="sample")
+        .pipe(_forward_fill_column, column_name="sample")
+        .pipe(_reassign_transfer_sample_rows)
+    )
+
+    return cleaned_df
+
+def clean_test_samples_data(
+    raw_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Clean the raw unlabelled 96-sample dataframe."""
+    spectral_columns = raw_df.columns[1:].tolist()
+
+    cleaned_df = (
+        raw_df.copy()
+        .pipe(
+            _remove_brackets_from_spectral_vals,
+            spectral_columns=spectral_columns,
+        )
+        .pipe(_label_df_columns, has_label_cols=False)
+        .pipe(_strip_column_whitespace, column_name="sample")
+        .pipe(_forward_fill_column, column_name="sample")
+    )
+
+    return cleaned_df
+
+def clean_source_device_data(
+    raw_df: pd.DataFrame,
+    device_name: str,
+) -> pd.DataFrame:
+    """Validate and standardise a raw source-device dataset."""
+    cleaned_df = raw_df.copy()
+
+    return cleaned_df
+
+def _reassign_transfer_sample_rows(df: pd.DataFrame) -> pd.DataFrame:
     """
     Attach transfer plate concentration labels to each spectrum row.
 
@@ -36,12 +96,12 @@ def reassign_transfer_sample_rows(df: pd.DataFrame) -> pd.DataFrame:
 
     return clean_transfer_df
 
-def remove_brackets_from_spectral_vals(df: pd.DataFrame, spectral_columns: list[str]) -> pd.DataFrame:
+def _remove_brackets_from_spectral_vals(df: pd.DataFrame, spectral_columns: list[str]) -> pd.DataFrame:
     """Remove raw-file square bracket artifacts from spectral values."""
     df[spectral_columns] = df[spectral_columns].replace(r'[\[\]]','',regex=True)
     return df
 
-def label_df_columns(df: pd.DataFrame, has_label_cols: bool = True) -> pd.DataFrame:
+def _label_df_columns(df: pd.DataFrame, has_label_cols: bool = True) -> pd.DataFrame:
     """
     Assign sample, wavenumber, and optional label column names.
 
@@ -63,12 +123,12 @@ def label_df_columns(df: pd.DataFrame, has_label_cols: bool = True) -> pd.DataFr
 
     return df
 
-def strip_column_whitespace(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
+def _strip_column_whitespace(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
     """Strip leading and trailing whitespace from identifier columns."""
     df[column_name] = df[column_name].str.strip()   
     return df
 
-def forward_fill_column(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
+def _forward_fill_column(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
     """
     Forward-fill repeated sample identifiers.
 
