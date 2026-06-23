@@ -53,8 +53,7 @@ def clean_test_samples_data(
     return cleaned_df
 
 def clean_source_device_data(
-    raw_df: pd.DataFrame,
-    device_name: str,
+    raw_df: pd.DataFrame
 ) -> pd.DataFrame:
     """Validate and standardise a raw source-device dataset."""
     cleaned_df = raw_df.copy()

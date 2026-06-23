@@ -8,6 +8,8 @@ from dig4bio.workflows import (
     make_interim_test_samples,
     make_interim_transfer_plate,
     make_all_eda_figures,
+    make_all_processed_datasets,
+    make_processed_source_dataset
 )
 
 
@@ -89,3 +91,27 @@ def make_all_eda_figures_command() -> None:
 
     # This pipeline expects interim datasets to exist already.
     make_all_eda_figures()
+
+def prepare_all_data_command() -> None:
+    """CLI wrapper for creating all processed data outputs."""
+
+    parser = argparse.ArgumentParser(
+        description="Create all processed data from the interim data."
+    )
+    
+    parser.parse_args()
+
+    # This pipeline expects interim datasets to exist already.
+    make_all_processed_datasets()
+
+def prepare_source_data_command() -> None:
+    """CLI wrapper for creating all processed data outputs."""
+
+    parser = argparse.ArgumentParser(
+        description="Create all processed data from the interim data."
+    )
+    
+    parser.parse_args()
+
+    # This pipeline expects interim datasets to exist already.
+    make_processed_source_dataset()
