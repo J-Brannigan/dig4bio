@@ -1,0 +1,22 @@
+name: source_grid_fingerprint_linear
+
+inputs:
+  level: interim
+  datasets: source_devices
+
+outputs:
+  level: processed
+  folder: source_grid_fingerprint_linear
+  file: source_datasets.csv
+
+wavenumber_grid:
+  start: 300
+  end: 1800
+  step: 1
+
+interpolation:
+  method: linear
+  extrapolate: false
+
+combine:
+  add_device_column: true

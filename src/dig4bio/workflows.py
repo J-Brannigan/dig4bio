@@ -1,18 +1,61 @@
 """Orchestration functions for project data workflows."""
 
 from matplotlib import pyplot as plt
+import numpy as np
 
 from dig4bio.data_cleaning import (
     clean_test_samples_data,
     clean_transfer_plate_data,
     clean_source_device_data
 )
-from dig4bio.preprocessing import build_wavenumber_grid, interpolate_spectra_to_grid
-from dig4bio.io import read_raman_file, read_raman_files, write_raman_file
+from dig4bio.preprocessing import align_spectral_dfs_to_common_grid, build_wavenumber_grid
+from dig4bio.io import read_raman_file, read_raman_files, write_raman_file, read_config_file
 from dig4bio.visualisation import generate_samples_plot
-from dig4bio.datasets import combine_source_datasets, align_spectral_dfs_to_common_grid
+from dig4bio.datasets import combine_source_datasets
 from dig4bio.paths import FIGURES_EDA_FOLDER
-from dig4bio.constants import ALL_DEVICE_NAMES, SOURCE_DEVICE_NAMES
+from dig4bio.constants import ALL_DEVICE_NAMES, SOURCE_DEVICE_NAMES, FINGERPRINT_GRID
+
+def _get_wavenumber_grid_from_config(config: dict) -> np.ndarray:
+    grid_config = config.get("wavenumber_grid", {})
+
+    return build_wavenumber_grid(
+        wavenumber_start=grid_config.get("start", FINGERPRINT_GRID[0]),
+        wavenumber_end=grid_config.get("end", FINGERPRINT_GRID[-1]),
+        wavenumber_step=grid_config.get("step", np.diff(FINGERPRINT_GRID)[0]),
+    )
+
+def _get_interpolation_params(config: dict) -> dict:
+    interpolation_config = config.get("interpolation", {})
+
+    return {
+        "interpolation_method": interpolation_config.get("method", "linear"),
+        "extrapolate": interpolation_config.get("extrapolate", False),
+    }
+
+def _get_output_params(config: dict) -> dict:
+    output_config = config.get("outputs", {})
+
+    return {
+        "level": output_config.get("level", "processed"),
+        "output_folder": output_config.get("folder", "source_grid_fingerprint_linear"),
+        "output_filename": output_config.get("file", "source_datasets.csv"),
+    }
+
+def _get_input_params(config: dict) -> dict:
+    input_config = config.get("inputs", {})
+
+    input_datasets = input_config.get("datasets")
+
+    if input_datasets is None:
+        raise ValueError("Config must define inputs.datasets")
+
+    if input_datasets == "source_devices":
+        input_datasets = SOURCE_DEVICE_NAMES
+
+    return {
+        "level": input_config.get("level", "interim"),
+        "names": input_datasets
+    }
 
 def make_interim_transfer_plate(output_filename: str = 'transfer_plate.csv') -> None:
     """Create and save the cleaned interim transfer plate dataset."""
@@ -64,18 +107,34 @@ def make_interim_source_devices() -> None:
             output_filename=f"{device_name}.csv",
         )
 
-def make_processed_source_dataset() -> None:
+def make_processed_source_dataset(config_name: str) -> None:
     """Create and save the combined source-device dataset."""
-    source_device_dfs = read_raman_files(SOURCE_DEVICE_NAMES,level="interim")
 
-    aligned_dfs = align_spectral_dfs_to_common_grid(source_device_dfs)
+    config = read_config_file('preprocessing',config_name)
+
+    # Get parameters from config YAML file
+    new_wavenumber_grid = _get_wavenumber_grid_from_config(config)
+    interpolation_params = _get_interpolation_params(config)
+    input_params = _get_input_params(config)
+    output_params = _get_output_params(config)
+    add_device_column = config.get("combine", {}).get("add_device_column", True)
+
+    source_device_dfs = read_raman_files(**input_params)
+
+    aligned_dfs = align_spectral_dfs_to_common_grid(
+        source_datasets=source_device_dfs,
+        new_wavenumbers=new_wavenumber_grid,
+        **interpolation_params
+    )
     
-    combined_df = combine_source_datasets(aligned_dfs)
+    combined_df = combine_source_datasets(
+        aligned_dfs,
+        add_device_column=add_device_column
+    )
 
     write_raman_file(
         df = combined_df,
-        level="processed",
-        output_filename=f'source_datasets.csv'
+        **output_params
     )
 
 
@@ -92,9 +151,9 @@ def make_sample_spectra_plot(output_filename: str = "sample_spectra_by_dataset.p
     fig.savefig(output_path, dpi=400, bbox_inches="tight")
     plt.close(fig)
 
-def make_all_processed_datasets() -> None:
+def make_all_processed_datasets(preprocessing_config_name: str) -> None:
     """Create the processed source datasets ready for modelling"""
-    make_processed_source_dataset()
+    make_processed_source_dataset(config_name=preprocessing_config_name)
 
 def make_all_interim_datasets() -> None:
     """Create all interim datasets from the raw competition files."""
@@ -102,10 +161,10 @@ def make_all_interim_datasets() -> None:
     make_interim_test_samples()
     make_interim_source_devices()
 
-def prepare_all_data() -> None:
+def prepare_all_data(preprocessing_config_name: str) -> None:
     """Prepare all project datasets for modelling."""
     make_all_interim_datasets()
-    make_all_processed_datasets()
+    make_all_processed_datasets(preprocessing_config_name=preprocessing_config_name)
 
 def make_all_eda_figures() -> None:
     """Create all EDA figures that depend on interim datasets."""

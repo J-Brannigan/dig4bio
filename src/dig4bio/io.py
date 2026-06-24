@@ -1,8 +1,10 @@
 import pandas as pd
-
-from dig4bio.paths import get_level_path
-from dig4bio.constants import DATASET_NAME_ALIASES
+import yaml
 from collections.abc import Iterable
+import os
+
+from dig4bio.paths import get_level_path, get_configs_path
+from dig4bio.constants import DATASET_NAME_ALIASES
 
 def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFrame:
     """
@@ -42,7 +44,7 @@ def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFra
     
     raise FileNotFoundError(name)
 
-def write_raman_file(df: pd.DataFrame, level: str, output_filename: str) -> None:
+def write_raman_file(df: pd.DataFrame, level: str, output_filename: str, output_folder: str = None) -> None:
     """
     Write a Raman spectrum dataset to a file
     
@@ -54,8 +56,14 @@ def write_raman_file(df: pd.DataFrame, level: str, output_filename: str) -> None
         The data maturity level (raw/interim/processed)
     output_filename: str
         The filename of the file to write the Raman dataset to
+    output_folder: str, Optional
+        The folder within the specified level folder to save the dataset to. Blank means no subfolder
     """
     folder = get_level_path(level)
+    if output_folder is not None:
+        folder = folder / output_folder
+        if not os.path.exists(folder):
+            os.mkdir(folder)
 
     if output_filename.lower().strip().endswith('.csv'):
         df.to_csv(folder / output_filename, index=False)
@@ -70,3 +78,15 @@ def read_raman_files(names: Iterable[str],level: str) -> dict[str, pd.DataFrame]
         name: read_raman_file(name=name, level=level)
         for name in names
     }
+
+def read_config_file(config_type: str, config_name: str) -> dict:
+
+    folder = get_configs_path(config_type)
+
+    if not os.path.exists(folder/config_name):
+        raise FileNotFoundError(f'{folder/config_name} does not exist')
+
+    with open(folder/config_name) as f:
+        config = yaml.safe_load(f)
+
+    return config

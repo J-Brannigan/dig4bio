@@ -21,3 +21,5 @@ DATASET_NAME_ALIASES: dict[str, str] = {
     'transfer': 'transfer_plate',
     '96': '96_samples',
 }
+
+FINGERPRINT_GRID = np.arange(300,1801,1)
