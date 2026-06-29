@@ -20,6 +20,8 @@ def interpolate_spectra_to_grid(
 
     if interpolation_method == 'linear':
         b_spline_degree=1
+    elif interpolation_method == 'cubic':
+        b_spline_degree=3
     else:
         raise ValueError(f'interpolation_method value not supported: {interpolation_method}')
     
