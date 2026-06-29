@@ -6,18 +6,19 @@
   - [1.1 Clean 8-device datasets ✅](#11-clean-8-device-datasets-)
   - [1.2 Clean transfer plate dataset ✅](#12-clean-transfer-plate-dataset-)
   - [1.3 Clean 96-sample dataset ✅](#13-clean-96-sample-dataset-)
-- [2. Standardise Wavenumber Grids 🚧](#2-standardise-wavenumber-grids)
-- [3. Perform Baseline Experiments](#3-perform-baseline-experiments)
+- [2. Standardise Wavenumber Grids ✅](#2-standardise-wavenumber-grids)
+- [3. Implement CV Strategy ](#3-implement-cv-strategy)
+- [4. Perform Baseline Experiments](#4-perform-baseline-experiments)
 
 ## Current Priority 🚧
 
-[2. Standardise Wavenumber Grids](#2-standardise-wavenumber-grids). The datasets we have been given to not conform to the same grid of wavenumbers. Models would require this to be the case, and so we have to investigate, design, and implement a shared wavenumber grid for all datasets.
+[3. Implement CV Strategy ](#3-implement-cv-strategy).
 
 ## Project Gates
 - Clean datasets ✅
-- Choose shared wavenumber grid strategy 🚧
-- Transform all spectra to shared grid
-- Combine 8-device training data
+- Choose shared wavenumber grid strategy ✅
+- Transform all spectra to shared grid ✅
+- Combine 8-device training data ✅
 - Implement CV strategy
 - Run baseline experiments
 - Run calibration / transfer experiments
@@ -84,9 +85,9 @@ Notes:
 - A reusable CLI command. ✅
 - A short summary of the data shape, target columns, sample count and wavenumber range. ✅
 
-# 2. Standardise Wavenumber Grids 🚧
+# 2. Standardise Wavenumber Grids ✅
 ### Status:
-In Progress
+Complete
 
 ### **Description:**
 Raman spectra from different devices may use different wavenumber grids. To train models across devices and predict consistently, all spectra need to be represented on a common grid.
@@ -100,14 +101,38 @@ Options:
 - Define the grid from training data only inside each CV fold.
 - Use one global grid based only on x-axis positions, not labels or intensities.
 
+Notes:
+- A single shared wavenumber strategy has been implemented - pick a start and end wavenumber and a wavenumber step size, and generate a grid. Then interpolate each spectra onto that grid.
+- Most of the time a grid over the fingerprint region (300-1800)cm^-1 with single cm^-1 steps and linear b-spline interpolation will be used, but yaml config files can be used to change this approach easily.
+
 ### **Output:**
 - Documented chosen grid strategy ✅
 - A reusable transformation function. ✅
-- All cleaned datasets transformed to the same spectral columns.
+- All cleaned datasets transformed to the same spectral columns.✅
 
-# 3. Perform Baseline Experiments
+# 3. Implement CV Strategy
+### Status:
+Status: Ready
 
-Status: Blocked by shared-grid strategy
+### **Description:**
+To ensure the performances we measure are accurate to the true performance, we need to implement a cross validation strategy. This will require us to train and test the model multiple times and then consider the spread and averatge
 
-Rough Goal:
-Produce a baseline performance goal for more advanced models to beat
+### **Goal:**
+
+### **Options:**
+
+
+# 4. Perform Baseline Experiments
+### Status:
+Status: Ready
+
+### **Description:**
+We should get an idea of how various simple models and apporaches work on the data we have before we try to implement more complex techniques. This gives us a baseline performance to beat.
+
+### **Goal:**
+Produce rough baseline performance goal(s) for more advanced models to beat
+
+### **Options:**
+We should try out
+- Train on the transfer plate only, test on the 96 samples with k-fold CV. Use linear regression.
+- Train on the 
