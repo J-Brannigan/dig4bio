@@ -6,7 +6,7 @@ import os
 from dig4bio.paths import get_level_path, get_configs_path
 from dig4bio.constants import DATASET_NAME_ALIASES
 
-def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFrame:
+def read_raman_file(name: str, level: str, header: int | None = 0, subfolder: str | None = None) -> pd.DataFrame:
     """
     Read a Raman spectrum dataset from a raw, interim, or processed data folder.
 
@@ -21,6 +21,8 @@ def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFra
         The data maturity level (raw/interim/processed)
     header: int | None
         Row number corresponding to the header row, or None if no header row
+    subfolder: str | None
+        The subfolder that the file is contained within
     Returns
     -------
     pd.DataFrame
@@ -29,14 +31,19 @@ def read_raman_file(name: str, level: str, header: int | None = 0) -> pd.DataFra
 
     folder = get_level_path(level)
 
+    if subfolder != None:
+        folder = folder / subfolder
+
     # Try exact names first, then known project aliases such as mettler -> mettler_toledo.csv.
     candidates = [
         folder / name,
         folder / f"{name}.csv",
+        folder / f"{name}.parquet",
     ]
 
     if name in DATASET_NAME_ALIASES:
         candidates.append(folder / f"{DATASET_NAME_ALIASES[name]}.csv")
+        candidates.append(folder / f"{DATASET_NAME_ALIASES[name]}.parquet")
 
     for file_path in candidates:
         if file_path.exists():
