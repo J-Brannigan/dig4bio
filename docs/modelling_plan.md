@@ -30,9 +30,8 @@ or in plain english:
         - Train on the training set
         - Calibrate on the calibration set
         - Use this model to to predict the test set analyte concentrations
-        - Calculate the prediction error. This is the error for this fold for this device
-
-As this will produce 8 (devices) * 5 (device-folds) = 40 cv error values, an average will have to be calculated. We should take an overall average, a device-level average, and a fold-level average (all with appropriate bounds).
+    - Combine all fold predictions
+    - Calculate the prediction error of the combined fold predictions. This is the error for this device.
 
 With this method, the transfer plate and the 96 samples test dataset would not be used in the cross validation. They would only be used at prediction time
 

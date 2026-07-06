@@ -23,3 +23,5 @@ DATASET_NAME_ALIASES: dict[str, str] = {
 }
 
 FINGERPRINT_GRID = np.arange(300,1801,1)
+
+LABEL_COLUMNS = ['glucose','Na_acetate','Mg_SO4']

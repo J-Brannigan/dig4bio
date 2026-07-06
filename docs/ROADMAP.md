@@ -6,13 +6,13 @@
   - [1.1 Clean 8-device datasets ✅](#11-clean-8-device-datasets-)
   - [1.2 Clean transfer plate dataset ✅](#12-clean-transfer-plate-dataset-)
   - [1.3 Clean 96-sample dataset ✅](#13-clean-96-sample-dataset-)
-- [2. Standardise Wavenumber Grids ✅](#2-standardise-wavenumber-grids)
-- [3. Implement CV Strategy 🚧](#3-implement-cv-strategy)
+- [2. Standardise Wavenumber Grids ✅](#2-standardise-wavenumber-grids-)
+- [3. Implement CV Strategy 🚧](#3-implement-cv-strategy-)
 - [4. Perform Baseline Experiments](#4-perform-baseline-experiments)
 
 ## Current Priority 🚧
 
-[3. Implement CV Strategy ](#3-implement-cv-strategy).
+[3. Implement CV Strategy](#3-implement-cv-strategy-).
 
 ## Project Gates
 - Clean datasets ✅

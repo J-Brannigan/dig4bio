@@ -12,7 +12,9 @@ dependencies = [
     "matplotlib",
     "notebook",
     "pandas",
-    "numpy"
+    "numpy",
+    "scikit-learn",
+    "xgboost"
 ]
 
 [project.scripts]
