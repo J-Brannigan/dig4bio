@@ -4,20 +4,20 @@ from dig4bio.evaluation import get_error_function
 import numpy as np
 
 def augmented_cross_validate(
-        source_df: pd.DataFrame,
+        df: pd.DataFrame,
         wavenumber_columns: list[str],
         label_columns: list[str],
         model_factory,
         error_method: str = 'r2'
     ) -> dict:
-    """Perform cross validation over a source dataset, using one device each time as the held out calibration/test dataset.
+    """Perform cross validation over a DataFrame, using one device within the DataFrame each time as the held out calibration/test dataset.
 
     The function also performs an internal k-fold cross validation within each device outer fold, as each fold_idx value in the
     dataset corresponds to a group of samples unseen in the other folds.
     
     Parameters
     ----------
-    source_df: pd.DataFrame
+    df: pd.DataFrame
         DataFrame containing the data to split into source, calibration, and test.
     wavenumber_columns: list[str]
         The list of wavenumber column names in the DataFrame. These are the features.
@@ -34,8 +34,8 @@ def augmented_cross_validate(
         The chosen error type calculated for each analyte for each outer device fold
     """
 
-    devices = source_df['device'].unique().tolist()
-    fold_indices = source_df['fold_idx'].unique().tolist()
+    devices = df['device'].unique().tolist()
+    fold_indices = df['fold_idx'].unique().tolist()
 
     device_scores={}
     for device in devices:
@@ -48,7 +48,7 @@ def augmented_cross_validate(
             # Create chosen model type
             model = model_factory()
 
-            source_train, target_calibration, target_test  = generate_transfer_dataframes(source_df, device, fold_idx)
+            source_train, target_calibration, target_test  = generate_transfer_dataframes(df, device, fold_idx)
             
             model.fit(
                 source_df=source_train,
