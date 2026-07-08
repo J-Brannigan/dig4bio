@@ -12,12 +12,13 @@ def cross_validate_sample_folds(
         error_method: str = 'r2',
         calibrate: bool = True
     ) -> dict:
-    """Perform cross validation over a DataFrame, using one device within the DataFrame each time as the held out calibration/test dataset.
+    """Perform cross validation over a DataFrame, using one device within the DataFrame each time as the held out test dataset
+    and (optionally) the calibration dataset.
 
     The function also performs an internal k-fold cross validation within each device outer fold, as each fold_idx value in the
     dataset corresponds to a group of samples unseen in the other folds.
 
-    The model_factory must produce a CalibratedTransferRegressor object.
+    If calibrate = True, the model_factory must produce a CalibratedTransferRegressor object.
     
     Parameters
     ----------
