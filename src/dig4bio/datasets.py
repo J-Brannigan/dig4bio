@@ -18,7 +18,7 @@ def combine_source_datasets(source_datasets: dict[str, pd.DataFrame], add_device
 
     return combined_df
 
-def generate_transfer_dataframes(df, test_device: str, fold_idx: int) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def get_fold_df(df, test_device: str, fold_idx: int, category: str) -> pd.DataFrame:
     """From a source dataframe of raman spectra, create a dataframe to train on, a dataframe to simulate model calibration, and a dataframe to test on.
     
     The test and calibration dataframes will contain all data only from the 'test_device' to simulate a newly added device.
@@ -29,8 +29,13 @@ def generate_transfer_dataframes(df, test_device: str, fold_idx: int) -> tuple[p
     source_df = df[df['device'] != test_device]
     transfer_test_df = df[df['device'] == test_device]
 
-    source_train = source_df[source_df['fold_idx'] != fold_idx]
-    target_calibration = transfer_test_df[transfer_test_df['fold_idx'] != fold_idx]
-    target_test = transfer_test_df[transfer_test_df['fold_idx'] == fold_idx]
+    if category == 'train':
+        output_df = source_df[source_df['fold_idx'] != fold_idx]
+    elif category == 'calibration':
+        output_df = transfer_test_df[transfer_test_df['fold_idx'] != fold_idx]
+    elif category == 'test':
+        output_df =  transfer_test_df[transfer_test_df['fold_idx'] == fold_idx]
+    else:
+        raise ValueError(f'Fold DataFrame category must be one of "train", "calibration", or "test". Provided: {category}')
     
-    return source_train, target_calibration, target_test
+    return output_df

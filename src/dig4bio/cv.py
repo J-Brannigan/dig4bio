@@ -1,19 +1,23 @@
 import pandas as pd
-from dig4bio.datasets import generate_transfer_dataframes
+from dig4bio.datasets import get_fold_df
 from dig4bio.evaluation import get_error_function
 import numpy as np
+from dig4bio.models import train_model
 
-def augmented_cross_validate(
+def cross_validate_sample_folds(
         df: pd.DataFrame,
         wavenumber_columns: list[str],
         label_columns: list[str],
         model_factory,
-        error_method: str = 'r2'
+        error_method: str = 'r2',
+        calibrate: bool = True
     ) -> dict:
     """Perform cross validation over a DataFrame, using one device within the DataFrame each time as the held out calibration/test dataset.
 
     The function also performs an internal k-fold cross validation within each device outer fold, as each fold_idx value in the
     dataset corresponds to a group of samples unseen in the other folds.
+
+    The model_factory must produce a CalibratedTransferRegressor object.
     
     Parameters
     ----------
@@ -26,7 +30,9 @@ def augmented_cross_validate(
     model_factory: 
         Function to create a new untrained model object
     error_method: str, default = 'r2'
-        Method to calculate error of predicted values versus true values in each fold. 
+        Method to calculate error of predicted values versus true values in each fold.
+    calibrate: bool, default = True
+        Whether calibration data should be extracted from df and used to calibrate the model predictions
     
     Returns
     -------
@@ -45,25 +51,18 @@ def augmented_cross_validate(
 
         for fold_idx in fold_indices:
 
-            # Create chosen model type
-            model = model_factory()
+            source_df = get_fold_df(df, device, fold_idx, 'train')
+            test_df = get_fold_df(df, device, fold_idx, 'test')
 
-            source_train, target_calibration, target_test  = generate_transfer_dataframes(df, device, fold_idx)
+            if calibrate:
+                calibration_df = get_fold_df(df, device, fold_idx, 'calibration')
+            else:
+                calibration_df = None
             
-            model.fit(
-                source_df=source_train,
-                calibration_df=target_calibration,
-                feature_columns=wavenumber_columns,
-                label_columns=label_columns
-            )
-
-            predictions = model.predict(
-                test_df=target_test,
-                feature_columns=wavenumber_columns
-            )
+            predictions = execute_fold(model_factory, source_df, test_df, wavenumber_columns, label_columns, calibration_df)
 
             oof_predictions.append(predictions)
-            oof_true_values.append(target_test[label_columns].to_numpy())
+            oof_true_values.append(test_df[label_columns].to_numpy())
 
         # Calculate chosen error for each analyte
         error_function = get_error_function(error_method)
@@ -75,3 +74,29 @@ def augmented_cross_validate(
         device_scores[device]={label: score for label,score in zip(label_columns, scores)}
 
     return device_scores
+
+def execute_fold(
+        model_factory, 
+        train_df: pd.DataFrame,
+        test_df: pd.DataFrame,
+        feature_columns: list[str],
+        label_columns: list[str],
+        calibration_df: pd.DataFrame | None = None
+    ) -> np.ndarray:
+    """Create a model object, train the model on the training set, and use the model to predict a test set."""
+    # Create chosen model type
+    model = model_factory()
+    
+    model = train_model(
+        model = model,
+        train_df = train_df,
+        feature_columns=feature_columns,
+        label_columns=label_columns,
+        calibration_df=calibration_df
+    )
+
+    predictions = model.predict(
+        test_df[feature_columns].to_numpy()
+    )
+
+    return predictions
