@@ -1,7 +1,8 @@
 import pandas as pd
 from sklearn.exceptions import NotFittedError
 import numpy as np
-from sklearn.base import clone
+from sklearn.base import BaseEstimator, RegressorMixin, clone
+from sklearn.utils.validation import check_is_fitted
 from typing import Self
 
 class CalibratedTransferRegressor:
@@ -30,7 +31,7 @@ class CalibratedTransferRegressor:
     def __init__(self, prediction_model, calibration_model):
         self.prediction_model = prediction_model
         self.calibration_model = calibration_model
-        self.istrained = False
+        self.is_fitted_ = False
 
     def fit(self,X: np.ndarray, y: np.ndarray, X_calibration: np.ndarray, y_calibration: np.ndarray) -> Self:
         """Fit the prediction model to the source device data, and fit the calibration model to the prediction model residuals.
@@ -58,7 +59,7 @@ class CalibratedTransferRegressor:
 
         self.calibration_model.fit(X_calibration, calibration_residuals)
 
-        self.istrained = True
+        self.is_fitted_ = True
 
         return self
     
@@ -75,8 +76,7 @@ class CalibratedTransferRegressor:
         calibrated_predictions: np.ndarray
             Array of test data predictions with shape (n_samples, n_analytes)
         """
-        if not self.istrained:
-            raise NotFittedError('Regressor must be trained before predictions are made')
+        check_is_fitted(self,'is_fitted_')
 
         initial_predictions = self.prediction_model.predict(x_test)
         predicted_residuals = self.calibration_model.predict(x_test)
@@ -85,6 +85,24 @@ class CalibratedTransferRegressor:
 
         return calibrated_predictions
     
+
+class AveragePredictor(BaseEstimator, RegressorMixin):
+    """Regressor that calculates the average for each analyte and always predicts those values.
+
+    This regressor is meant to produce a scoring baseline.
+    """
+    def fit(self, X: np.ndarray, y: np.ndarray):
+        """Calculate the average of each analyte as the predictor"""
+
+        self.mean_ = np.mean(y,axis=0)
+        return self
+    
+    def predict(self, x: np.ndarray):
+        """Return analyte averages as the predictions for each row"""
+        check_is_fitted(self,'mean_')
+
+        return np.tile(self.mean_, (len(x),1))
+
 
 def train_model(model, train_df: pd.DataFrame, feature_columns:list[str], label_columns: list[str], calibration_df: pd.DataFrame = None, **fit_params):
     """Train a model on features (X) and labels (y) and calibrate on calibration data if given"""

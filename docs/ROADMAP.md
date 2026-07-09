@@ -139,6 +139,6 @@ Produce rough baseline performance goal(s) for more advanced models to beat
 
 ### **Options:**
 We should try out
-- Train on the transfer plate only, test on the 96 samples with k-fold CV. Use linear regression.
+- Train and test on the transfer plate only with k-fold CV over fold_idx. Use linear regression.
 - Train on the shared grid source dataset, using one device in each fold as the 'transfer + test' set. Use linear regression.
-- Calculate the average of each analyte from the shared grid source dataset and use those values as fixed predictions.
+- Use analyte averages in the shared grid source dataset, using one device in each fold as the 'test' set.

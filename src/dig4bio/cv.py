@@ -1,5 +1,5 @@
 import pandas as pd
-from dig4bio.datasets import get_fold_df
+from dig4bio.datasets import get_device_fold_df, get_fold_df
 from dig4bio.evaluation import get_error_function
 import numpy as np
 from dig4bio.models import train_model
@@ -55,14 +55,14 @@ def augmented_cross_validate_sample_folds(
 
         for fold_idx in fold_indices:
 
-            source_df = get_fold_df(df, device, fold_idx, 'train')
+            source_df = get_device_fold_df(df, device, fold_idx, 'train')
             if test_df is None:
-                fold_test_df = get_fold_df(df, device, fold_idx, 'test')
+                fold_test_df = get_device_fold_df(df, device, fold_idx, 'test')
             else:
                 fold_test_df = test_df[test_df['fold_idx']==fold_idx]
 
             if calibrate:
-                calibration_df = get_fold_df(df, device, fold_idx, 'calibration')
+                calibration_df = get_device_fold_df(df, device, fold_idx, 'calibration')
             else:
                 calibration_df = None
             
@@ -81,6 +81,61 @@ def augmented_cross_validate_sample_folds(
         device_scores[device]={label: score for label,score in zip(label_columns, scores)}
 
     return device_scores
+
+def cross_validate_sample_folds(
+        train_df: pd.DataFrame,
+        test_df: pd.DataFrame,
+        wavenumber_columns: list[str],
+        label_columns: list[str],
+        model_factory,
+        error_method: str = 'r2',
+    ) -> dict:
+    """Perform k-fold cross validation over train and test DataFrames, ensuring within each fold that the same fold_idx value
+    is not trained and tested on.
+
+    Each fold_idx value in the dataset corresponds to a group of samples unseen in the other folds.
+    
+    Parameters
+    ----------
+    train_df: pd.DataFrame
+        DataFrame containing the data to train on.
+    test_df: pd.DataFrame
+        DataFrame containing the data to test on.
+    wavenumber_columns: list[str]
+        The list of wavenumber column names in the DataFrame. These are the features.
+    label_columns: list[str]
+        The list of label column names in the DataFrame
+    model_factory: 
+        Function to create a new untrained model object
+    error_method: str, default = 'r2'
+        Method to calculate error of predicted values versus true values in each fold.
+    
+    Returns
+    -------
+    fold_scores: dict
+        The chosen error type calculated for each analyte for each fold
+    """
+    fold_indices = train_df['fold_idx'].unique().tolist()
+
+    fold_scores={}
+    for fold_idx in fold_indices:
+
+        fold_train_df = get_fold_df(train_df, fold_idx, 'train')
+        fold_test_df = get_fold_df(test_df, fold_idx, 'test')
+        
+        predictions = execute_fold(model_factory, fold_train_df, fold_test_df, wavenumber_columns, label_columns)
+
+        # Calculate chosen error for each analyte
+        error_function = get_error_function(error_method)
+        scores = error_function(
+            true_values=fold_test_df[label_columns].to_numpy(),
+            predicted_values=predictions,
+            how='by_analyte'
+        )
+
+        fold_scores[fold_idx]={label: score for label,score in zip(label_columns, scores)}
+
+    return fold_scores
 
 def execute_fold(
         model_factory, 

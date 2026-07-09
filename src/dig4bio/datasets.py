@@ -18,12 +18,12 @@ def combine_source_datasets(source_datasets: dict[str, pd.DataFrame], add_device
 
     return combined_df
 
-def get_fold_df(df, test_device: str, fold_idx: int, category: str) -> pd.DataFrame:
-    """From a source dataframe of raman spectra, create a dataframe to train on, a dataframe to simulate model calibration, and a dataframe to test on.
+def get_device_fold_df(df, test_device: str, fold_idx: int, category: str) -> pd.DataFrame:
+    """From a source DataFrame of raman spectra, create a dataframe to train on, a DataFrame to simulate model calibration, and a DataFrame to test on.
     
-    The test and calibration dataframes will contain all data only from the 'test_device' to simulate a newly added device.
+    The test and calibration DataFrames will contain all data only from the 'test_device' to simulate a newly added device.
 
-    The train and calibration dataframes will contain all data not from the 'fold_idx' to simulate a newly seen sample. (Each sample does not span more than one fold_idx)
+    The train and calibration DataFrames will contain all data not from the 'fold_idx' to simulate a newly seen sample. (Each sample does not span more than one fold_idx)
     """
 
     source_df = df[df['device'] != test_device]
@@ -37,5 +37,22 @@ def get_fold_df(df, test_device: str, fold_idx: int, category: str) -> pd.DataFr
         output_df =  transfer_test_df[transfer_test_df['fold_idx'] == fold_idx]
     else:
         raise ValueError(f'Fold DataFrame category must be one of "train", "calibration", or "test". Provided: {category}')
+    
+    return output_df
+
+def get_fold_df(df, fold_idx: int, category: str) -> pd.DataFrame:
+    """From a source DataFrame of raman spectra split by fold_idx, create a dataframe to train on, and a DataFrame to test on.
+    
+    The test DataFrame will contain all data only from the 'test_device' to simulate a newly added device.
+
+    The train DataFrame will contain all data not from the 'fold_idx' to simulate a newly seen sample. (Each sample does not span more than one fold_idx).
+    """
+
+    if category == 'train':
+        output_df = df[df['fold_idx'] != fold_idx]
+    elif category == 'test':
+        output_df =  df[df['fold_idx'] == fold_idx]
+    else:
+        raise ValueError(f'Fold DataFrame category must be "train" or "test". Provided: {category}')
     
     return output_df
