@@ -4,11 +4,12 @@ from dig4bio.evaluation import get_error_function
 import numpy as np
 from dig4bio.models import train_model
 
-def cross_validate_sample_folds(
+def augmented_cross_validate_sample_folds(
         df: pd.DataFrame,
         wavenumber_columns: list[str],
         label_columns: list[str],
         model_factory,
+        test_df: pd.DataFrame | None = None,
         error_method: str = 'r2',
         calibrate: bool = True
     ) -> dict:
@@ -23,13 +24,15 @@ def cross_validate_sample_folds(
     Parameters
     ----------
     df: pd.DataFrame
-        DataFrame containing the data to split into source, calibration, and test.
+        DataFrame containing the data to split into source, calibration, and (optionally) test.
     wavenumber_columns: list[str]
         The list of wavenumber column names in the DataFrame. These are the features.
     label_columns: list[str]
         The list of label column names in the DataFrame
     model_factory: 
         Function to create a new untrained model object
+    test_df: pd.DataFrame | None, default = None
+        DataFrame containing the data to test on. Optional. If not given test data comes from df.
     error_method: str, default = 'r2'
         Method to calculate error of predicted values versus true values in each fold.
     calibrate: bool, default = True
@@ -53,17 +56,20 @@ def cross_validate_sample_folds(
         for fold_idx in fold_indices:
 
             source_df = get_fold_df(df, device, fold_idx, 'train')
-            test_df = get_fold_df(df, device, fold_idx, 'test')
+            if test_df is None:
+                fold_test_df = get_fold_df(df, device, fold_idx, 'test')
+            else:
+                fold_test_df = test_df[test_df['fold_idx']==fold_idx]
 
             if calibrate:
                 calibration_df = get_fold_df(df, device, fold_idx, 'calibration')
             else:
                 calibration_df = None
             
-            predictions = execute_fold(model_factory, source_df, test_df, wavenumber_columns, label_columns, calibration_df)
+            predictions = execute_fold(model_factory, source_df, fold_test_df, wavenumber_columns, label_columns, calibration_df)
 
             oof_predictions.append(predictions)
-            oof_true_values.append(test_df[label_columns].to_numpy())
+            oof_true_values.append(fold_test_df[label_columns].to_numpy())
 
         # Calculate chosen error for each analyte
         error_function = get_error_function(error_method)
