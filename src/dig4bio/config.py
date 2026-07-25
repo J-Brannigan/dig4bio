@@ -43,8 +43,3 @@ def get_input_params(config: dict) -> dict:
         "level": input_config.get("level", "interim"),
         "names": input_datasets
     }
-
-def get_experiment_params(cofig: dict) -> dict:
-
-    
-    return 

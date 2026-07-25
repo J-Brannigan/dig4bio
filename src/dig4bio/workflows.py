@@ -125,11 +125,3 @@ def prepare_all_data(preprocessing_config_name: str) -> None:
 def make_all_eda_figures() -> None:
     """Create all EDA figures that depend on interim datasets."""
     make_sample_spectra_plot()
-
-def run_experiment(config_name: str) -> None:
-
-    config = read_config_file('preprocessing',config_name)
-
-    experiment_params = get_experiment_params()
-
-    return

@@ -2,6 +2,7 @@ import pandas as pd
 import yaml
 from collections.abc import Iterable
 import os
+from pathlib import Path
 
 from dig4bio.paths import get_level_path, get_configs_path
 from dig4bio.constants import DATASET_NAME_ALIASES
@@ -50,6 +51,25 @@ def read_raman_file(name: str, level: str, header: int | None = 0, subfolder: st
             return pd.read_csv(file_path,index_col=False, header=header)
     
     raise FileNotFoundError(name)
+
+def read_raman_file_from_path(file_path: Path, header: int | None = 0) -> pd.DataFrame:
+    """
+    Read a Raman spectrum dataset from a file path
+    
+    Parameters
+    ----------
+    file_path: Path
+        The Path of the raman file to read from
+    Returns
+    -------
+    pd.DataFrame
+        The Raman spectrum dataset as a dataframe
+    """
+
+    if file_path.exists():
+        return pd.read_csv(file_path,index_col=False, header=header)
+    
+    raise FileNotFoundError(file_path)
 
 def write_raman_file(df: pd.DataFrame, level: str, output_filename: str, output_folder: str = None) -> None:
     """
