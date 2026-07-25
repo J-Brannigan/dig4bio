@@ -129,16 +129,16 @@ Notes:
 
 # 4. Perform Baseline Experiments 🚧
 ### Status:
-Status: Ready
+Status: In Progress
 
 ### **Description:**
-We should get an idea of how various simple models and apporaches work on the data we have before we try to implement more complex techniques. This gives us a baseline performance to beat.
+We should get an idea of how various simple models and approaches work on the data we have before we try to implement more complex techniques. This gives us a baseline performance to beat.
 
 ### **Goal:**
 Produce rough baseline performance goal(s) for more advanced models to beat
 
 ### **Options:**
 We should try out
-- Train and test on the transfer plate only with k-fold CV over fold_idx. Use linear regression.
-- Train on the shared grid source dataset, using one device in each fold as the 'transfer + test' set. Use linear regression.
-- Use analyte averages in the shared grid source dataset, using one device in each fold as the 'test' set.
+- Train and test on the transfer plate only with k-fold CV over groups of samples. Use linear regression.
+- Use linear regression. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other devices excluding that same fold_idx value.
+- Use analyte averages. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other devices excluding that same fold_idx value.
