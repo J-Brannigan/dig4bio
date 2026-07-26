@@ -28,18 +28,27 @@ def get_output_params(config: dict) -> dict:
         "output_filename": output_config.get("file", "source_datasets.csv"),
     }
 
-def get_input_params(config: dict) -> dict:
-    input_config = config.get("inputs", {})
+def get_input_params(config: dict) -> list[dict[str, str]]:
+    input_config = config.get("input", {})
 
-    input_datasets = input_config.get("datasets")
+    input_data = input_config.get("dataset")
 
-    if input_datasets is None:
+    if input_data is None:
         raise ValueError("Config must define inputs.datasets")
 
-    if input_datasets == "source_devices":
-        input_datasets = SOURCE_DEVICE_NAMES
+    elif input_data == "source_devices":
+        return [
+            {"level": input_config.get("level", "interim"),
+            "dataset": dataset} for dataset in SOURCE_DEVICE_NAMES
+        ]
+    else:
+        return [{
+            "level": input_config.get("level", "interim"),
+            "dataset": input_data,
+        }]
 
-    return {
-        "level": input_config.get("level", "interim"),
-        "names": input_datasets
-    }
+def get_rename_params(config: dict) -> dict[str, str]:
+
+    rename_config = config.get('rename_columns',{})
+
+    return rename_config

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import make_interp_spline
 
-from dig4bio.utils import get_interim_spectral_cols
+from dig4bio.datasets import get_interim_spectral_cols
 from dig4bio.constants import FINGERPRINT_GRID
 
 def build_wavenumber_grid(wavenumber_start: float = 300, wavenumber_end: float = 1800, wavenumber_step: float = 1) -> np.ndarray:

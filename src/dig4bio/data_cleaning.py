@@ -137,3 +137,12 @@ def _forward_fill_column(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
     """
     df[column_name] = df[column_name].ffill(axis=0)
     return df
+
+
+def rename_df_column(df: pd.DataFrame, mapping: dict) -> pd.DataFrame:
+    print(mapping)
+
+    output_df = df.copy()
+    output_df = output_df.rename(columns=mapping)
+
+    return output_df

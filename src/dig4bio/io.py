@@ -6,6 +6,7 @@ from pathlib import Path
 
 from dig4bio.paths import get_level_path, get_configs_path
 from dig4bio.constants import DATASET_NAME_ALIASES
+from dig4bio.paths import PREPROCESSING_CONFIG_FOLDER
 
 def read_raman_file(name: str, level: str, header: int | None = 0, subfolder: str | None = None) -> pd.DataFrame:
     """
@@ -117,3 +118,10 @@ def read_config_file(config_type: str, config_name: str) -> dict:
         config = yaml.safe_load(f)
 
     return config
+
+def get_preprocessing_config_names() -> list[str]:
+    print(PREPROCESSING_CONFIG_FOLDER)
+
+    names = [p.name for p in PREPROCESSING_CONFIG_FOLDER.iterdir()]
+
+    return names

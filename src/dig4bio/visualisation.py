@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from matplotlib.lines import Line2D
 
-from dig4bio.utils import get_interim_spectral_cols
+from dig4bio.datasets import get_interim_spectral_cols
 
 def generate_samples_plot(dfs: dict[str, pd.DataFrame]) ->plt.Figure:
     """

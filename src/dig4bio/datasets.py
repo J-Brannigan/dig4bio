@@ -56,3 +56,19 @@ def get_fold_df(df, fold_idx: int, category: str) -> pd.DataFrame:
         raise ValueError(f'Fold DataFrame category must be "train" or "test". Provided: {category}')
     
     return output_df
+
+
+def get_interim_spectral_cols(device: str, df: pd.DataFrame) -> list[str]:
+    """Return spectral column names for an interim dataset.
+
+    Interim source-device, transfer plate, and test datasets have different
+    metadata/label/spectral columns, so the columns occupy different slices.
+    """
+    if device == 'transfer_plate':
+        spectral_cols = df.columns[1:-3]
+    elif device == '96_samples':
+        spectral_cols = df.columns[1:]
+    else:
+        spectral_cols = df.columns[:-5]
+
+    return spectral_cols.tolist()

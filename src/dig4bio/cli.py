@@ -98,19 +98,11 @@ def prepare_all_data_command() -> None:
     parser = argparse.ArgumentParser(
         description="Create all processed data from the interim data."
     )
-
-    parser.add_argument(
-        "--preprocessing_config",
-        type=str,
-        required=False,
-        default="source_grid_fingerprint_linear.yaml",
-        help="Preprocessing config filename from configs/preprocessing."
-    )
     
     args = parser.parse_args()
 
     # This pipeline expects interim datasets to exist already.
-    make_all_processed_datasets(preprocessing_config_name=args.preprocessing_config)
+    make_all_processed_datasets()
 
 def prepare_source_data_command() -> None:
     """CLI wrapper for creating all processed data outputs."""
@@ -122,8 +114,7 @@ def prepare_source_data_command() -> None:
     parser.add_argument(
         "--config",
         type=str,
-        required=False,
-        default="source_grid_fingerprint_linear.yaml",
+        required=True,
         help="Preprocessing config filename from configs/preprocessing."
     )
     

@@ -1,0 +1,24 @@
+name: transfer_grid_fingerprint_linear
+
+input:
+  level: interim
+  dataset: transfer_plate
+
+outputs:
+  level: processed
+  folder: transfer_grid_fingerprint_linear
+  file: transfer_plate.csv
+
+wavenumber_grid:
+  start: 300
+  end: 1800
+  step: 1
+
+interpolation:
+  method: linear
+  extrapolate: false
+
+rename_columns:
+  Glucose (g/L): glucose
+  Sodium Acetate (g/L): Na_acetate
+  Magnesium Acetate (g/L): Mg_SO4
