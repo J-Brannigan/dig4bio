@@ -18,7 +18,7 @@ def combine_source_datasets(source_datasets: dict[str, pd.DataFrame], add_device
 
     return combined_df
 
-def get_device_fold_df(df, test_device: str, fold_idx: int, category: str) -> pd.DataFrame:
+def get_device_fold_df(df, test_device: str, fold_idx: int, category: str, train_on_target: bool = False) -> pd.DataFrame:
     """From a source DataFrame of raman spectra, create a dataframe to train on, a DataFrame to simulate model calibration, and a DataFrame to test on.
     
     The test and calibration DataFrames will contain all data only from the 'test_device' to simulate a newly added device.
@@ -26,7 +26,11 @@ def get_device_fold_df(df, test_device: str, fold_idx: int, category: str) -> pd
     The train and calibration DataFrames will contain all data not from the 'fold_idx' to simulate a newly seen sample. (Each sample does not span more than one fold_idx)
     """
 
-    source_df = df[df['device'] != test_device]
+    if train_on_target:
+        source_df = df[df['device'] == test_device]
+    else:
+        source_df = df[df['device'] != test_device]
+
     transfer_test_df = df[df['device'] == test_device]
 
     if category == 'train':

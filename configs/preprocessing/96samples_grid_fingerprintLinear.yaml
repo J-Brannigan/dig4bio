@@ -1,0 +1,19 @@
+name: 96samples_grid_fingerprintLinear
+
+input:
+  level: interim
+  dataset: 96_samples
+
+outputs:
+  level: processed
+  folder: 96samples_grid_fingerprint_linear
+  file: 96_samples.csv
+
+wavenumber_grid:
+  start: 300
+  end: 1800
+  step: 1
+
+interpolation:
+  method: linear
+  extrapolate: false

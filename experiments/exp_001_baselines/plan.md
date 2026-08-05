@@ -11,6 +11,7 @@ If a more complex model does not hit the bars set by this experiment, then it is
 
 ## Hypothesis
 The performance of the methods (from highest to lowest will be)
-1) Linear Regression over the shared grid source dataset (Cross validated)
-2) Transfer plate only Train + Test with k-fold CV over groups of samples. Use linear regression.
-3) Analyte averages in the shared grid source dataset (Cross validated)
+1) Linear Sources
+2) Linear Target
+3) Averages Target
+4) Averages Sources

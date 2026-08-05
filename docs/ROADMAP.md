@@ -139,6 +139,16 @@ Produce rough baseline performance goal(s) for more advanced models to beat
 
 ### **Options:**
 We should try out
-- Train and test on the transfer plate only with k-fold CV over groups of samples. Use linear regression.
-- Use linear regression. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other devices excluding that same fold_idx value.
-- Use analyte averages. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other devices excluding that same fold_idx value.
+- Use **linear regression**. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other **folds** excluding that same fold_idx value.
+- Use **analyte averages**. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other **folds** excluding that same fold_idx value.
+- Use **linear regression**. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other **devices** excluding that same fold_idx value.
+- Use **analyte averages**. Use only the shared-grid source dataset. For each device, hold that device out as the target device. For each fold_idx value, test on that fold of the target device and train on all other **devices** excluding that same fold_idx value.
+
+So basically:
+
+| Name | Method | Train Data | Test Data |
+|---|---|---|---|
+| Linear Target| Linear Regression | (Target device) NOT fold_idx | (Target device): fold_idx |
+| Averages Target | Analyte Averages | (Target device): NOT fold_idx | (Target device): fold_idx |
+| Linear Sources | Linear Regression | (NOT Target Device): NOT fold_idx | (Target Device): fold_idx |
+| Averages Sources | Analyte Averages | (NOT Target Device): NOT fold_idx | (Target Device): fold_idx |
