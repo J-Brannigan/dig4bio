@@ -74,4 +74,7 @@ After installing the package in editable mode, these commands are available:
 | `dig4bio-clean-test` | Create the interim 96-sample test dataset. |
 | `dig4bio-clean-sources` | Create interim datasets for the eight source devices. |
 | `dig4bio-clean-all` | Create all interim datasets. |
-| `dig4bio-make-eda` | Create all data analysis figures/plots. |
+| `dig4bio-prepare-source-data` | Create processed source-device data from the interim source-device data. |
+| `dig4bio-prepare-all` | Create all processed data from the interim data. |
+| `dig4bio-make-eda-figures` | Create all data analysis figures/plots. |
+| `dig4bio-make-experiment` | Create a new experiment folder from a template |

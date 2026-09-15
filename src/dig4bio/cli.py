@@ -135,10 +135,10 @@ def prepare_all_data_command() -> None:
     make_all_processed_datasets()
 
 def prepare_source_data_command() -> None:
-    """CLI wrapper for creating all processed data outputs."""
+    """CLI wrapper for creating processed source-device data."""
 
     parser = argparse.ArgumentParser(
-        description="Create all processed data from the interim data."
+        description="Create processed source-device data from the interim source-device data."
     )
 
     parser.add_argument(
