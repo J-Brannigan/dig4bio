@@ -8,20 +8,21 @@
   - [1.3 Clean 96-sample dataset ✅](#13-clean-96-sample-dataset-)
 - [2. Standardise Wavenumber Grids ✅](#2-standardise-wavenumber-grids-)
 - [3. Implement CV Strategy ✅](#3-implement-cv-strategy-)
-- [4. Perform Baseline Experiments 🚧](#4-perform-baseline-experiments)
+- [4. Perform Baseline Experiments ✅](#4-perform-baseline-experiments-)
+- [5. Perform Calibration Baseline Experiments 🚧](#5-perform-calibration-baseline-experiments-)
 
-## Current Priority 🚧
+## Current Priority ✅
 
-[4. Perform Baseline Experiments](#4-perform-baseline-experiments-).
+General experiments
 
 ## Project Gates
 - Clean datasets ✅
 - Choose shared wavenumber grid strategy ✅
 - Transform all spectra to shared grid ✅
 - Combine 8-device training data ✅
-- Implement CV strategy
-- Run baseline experiments
-- Run calibration / transfer experiments
+- Implement CV strategy ✅
+- Run baseline experiments ✅
+- Run calibration / transfer experiments 🚧
 
 # 1. Clean Datasets
 This is just basic cleanup - ensuring no nulls, standarising columns shapes, removal of erroenous characters
@@ -127,9 +128,9 @@ Notes:
 - Documented cross validation strategy/strategies ✅
 - A resusable cross validation function/functions ✅
 
-# 4. Perform Baseline Experiments 🚧
+# 4. Perform Baseline Experiments ✅
 ### Status:
-Status: In Progress
+Status: Completed
 
 ### **Description:**
 We should get an idea of how various simple models and approaches work on the data we have before we try to implement more complex techniques. This gives us a baseline performance to beat.
@@ -152,3 +153,27 @@ So basically:
 | Averages Target | Analyte Averages | (Target device): NOT fold_idx | (Target device): fold_idx |
 | Linear Sources | Linear Regression | (NOT Target Device): NOT fold_idx | (Target Device): fold_idx |
 | Averages Sources | Analyte Averages | (NOT Target Device): NOT fold_idx | (Target Device): fold_idx |
+
+## 5. Perform Calibration Baseline Experiments 🚧
+### Status:
+Status: In Progress
+
+### **Description:**
+We should get an idea about how well basic calibration training procedures works. We should hopefully see a slight increase from the basic baseline experiments performed in the previous stage.
+
+### **Goal:**
+Produce rough baseline calibration model performance goal(s) for more advanced models to beat
+
+### **Options:**
+Use only the shared-grid source dataset. For each device, hold that device out as the target device and label all the others as 'sources'.
+
+Then
+- For each fold_idx value X:
+  - Train on all sources data where fold_idx != X. Use linear regression.
+  - **METHOD HERE**
+  - Test on target device data where fold_idx = X
+
+Method:
+  - Use trained model to predict target device data where fold_idx != x
+  - Train a second calibration model to predict the residuals between trained model predictions and actual values. Use linear regression.
+  - Combine both models into one regressor object
