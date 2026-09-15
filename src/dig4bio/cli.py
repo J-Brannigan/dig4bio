@@ -12,6 +12,10 @@ from dig4bio.workflows import (
     make_processed_source_dataset
 )
 
+from dig4bio.utils import(
+    create_experiment_from_template
+)
+
 
 def make_interim_transfer_plate_command() -> None:
     """CLI wrapper for creating the interim transfer plate dataset."""
@@ -91,6 +95,32 @@ def make_all_eda_figures_command() -> None:
 
     # This pipeline expects interim datasets to exist already.
     make_all_eda_figures()
+
+def make_experiment_from_template_command() -> None:
+    """CLI wrapper for creating a new experiment folder from the template."""
+
+    parser = argparse.ArgumentParser(
+        description="Create a new experiment folder from the template"
+    )
+
+    parser.add_argument(
+            '--experiment_name',
+            type=str,
+            required=True,
+            help="The identification name that the new experiment should have."
+        )
+
+    parser.add_argument(
+            '--experiment_number',
+            type=int,
+            required=False,
+            default=None,
+            help="The identification number that the new should have."
+            )
+    
+    args = parser.parse_args()
+
+    create_experiment_from_template(experiment_name=args.experiment_name, experiment_number=args.experiment_number)
 
 def prepare_all_data_command() -> None:
     """CLI wrapper for creating all processed data outputs."""
