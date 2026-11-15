@@ -229,7 +229,7 @@ results/*
 results/figures/*
 !results/figures/eda/
 !results/figures/eda/**
-experiments/**/runs/
+experiments/**/runs/**/*.csv
 *.pkl
 *.joblib
 *.parquet

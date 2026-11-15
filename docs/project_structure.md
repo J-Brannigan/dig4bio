@@ -111,6 +111,8 @@ experiments/exp_001_baselines/runs/run_001/
 
 The config in `configs/experiments/` is the editable recipe. The config copied into a run folder is the frozen record of what actually ran.
 
+Some experiments are not well structured, and so are driven by notebooks. In this case, there may only be the notebook and the output files in the run folder.
+
 ## Naming Convention
 
 Use names that describe the purpose of the experiment, not the expected outcome.
